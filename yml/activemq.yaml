@@ -1,0 +1,46 @@
+# ------------activemq
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: activemq
+  labels:
+    app: activemq-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: activemq-app
+  template:
+    metadata:
+      labels:
+        app: activemq-app
+    spec:
+     #volumes:
+     #- name: redis-storage
+     #  emptyDir: {}
+      containers:
+      - name: activemq
+        image: webcenter/activemq:latest
+     #  args:
+     #    - --requirepass 
+     #    - my888888
+     #  volumeMounts:
+     #  - name: redis-storage
+     #    mountPath: /data/redis
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: activemq-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: activemq-app
+  ports:
+  # Default port used by the image
+  - name: 'work'
+    port: 61616
+  - name: 'web'
+    port: 8161
+---

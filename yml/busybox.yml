@@ -1,0 +1,23 @@
+
+# ------------busybox
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox
+  labels:
+    app: busybox-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox-app
+  template:
+    metadata:
+      labels:
+        app: busybox-app
+    spec:
+      containers:
+      - name: busybox
+        image: alpine:3.12
+        #command: ["tail","-f","/dev/null"]

@@ -1,0 +1,43 @@
+# ------------redis
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: redis-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-app
+  template:
+    metadata:
+      labels:
+        app: redis-app
+    spec:
+      volumes:
+      - name: redis-storage
+        emptyDir: {}
+      containers:
+      - name: redis
+        image: redis:latest
+        args:
+          - --requirepass 
+          - my888888
+        volumeMounts:
+        - name: redis-storage
+          mountPath: /data/redis
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: redis-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: redis-app
+  ports:
+  # Default port used by the image
+  - port: 6379
+---

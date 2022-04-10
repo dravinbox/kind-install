@@ -1,0 +1,32 @@
+#----- memecached
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memcached
+  labels:
+    app: memcached-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memcached-app
+  template:
+    metadata:
+      labels:
+        app: memcached-app
+    spec:
+      containers:
+      - name: memcached
+        image: memcached:latest
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: memcached-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: memcached-app
+  ports:
+  # Default port used by the image
+  - port: 11211
